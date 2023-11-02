@@ -2,7 +2,7 @@
 header{
   display:flex;
   justify-content:center;
-  width: 500px;
+  width: 400px;
   height: 100px;
   }
 
@@ -10,7 +10,7 @@ nav{
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 500px;
+  width: 400px;
   height: 100px;
 }
 
@@ -42,9 +42,10 @@ main{
       "descripcion1"
       "tipo1"
       "habilidades1"
+      "evolucion1"
       "boton2";
     grid-template-columns: 1fr; 
-    width: 500px;
+    width: 400px;
     height: 100px;
    align-items:center;
 }
@@ -82,9 +83,8 @@ main{
   display: inline-block;
   text-align:left;
   grid-area:descripcion1;
-
+  padding: 0.5%;
   Font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  padding: 1%;
 }
 
 .imagenPokemon1{
@@ -92,7 +92,7 @@ main{
   display: inline-block;
   text-align:center;
   grid-area:imagenPokemon1;
-  padding: 1%;
+  padding: 0.5%;
 }
 
 .tipo1{
@@ -100,8 +100,8 @@ main{
   display: inline-block;
   text-align:left;
   grid-area:tipo1;
-  padding: 1%;
   Font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  padding: 0.5%;
 }
 
 .habilidades1{
@@ -109,8 +109,18 @@ main{
   display: inline-block;
   text-align:left;
   grid-area:habilidades1;
-  padding: 1%;
   Font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  padding: 0.5%;
+}
+
+.evolucion1{
+  position: relative;
+  display: inline-block;
+  text-align:left;
+  grid-area:evolucion1;
+  Font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  padding: 0.5%;
+  font-weight: bold;
 }
 
 

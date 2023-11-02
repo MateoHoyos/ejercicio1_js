@@ -6,101 +6,89 @@ async function boton() {
   document.getElementById('imagenPokemon').innerHTML = null;
   document.getElementById('descripcion').innerText = null;
 
-  // Obtener el valor del cuadro de texto
   var nombrePokemon = document.getElementById("miInput").value;
-  // Concatenar el nombre del Pokémon a la URL
   const url = `https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`;
   const url1 = `https://pokeapi.co/api/v2/pokemon-species/${nombrePokemon}`;
 
   let siguienteEvolucion = null;
 
   try {
-      // Realizar la solicitud GET utilizando fetch
       const response = await fetch(url);
       if (!response.ok) {
           throw new Error('Error en la solicitud de la API');
       }
-      // Convertir la respuesta a formato JSON
       const data = await response.json();
-
-      // Modificar el DOM con los datos obtenidos
       document.getElementById('nombre').innerText = `${data.name}`;
       document.getElementById('tipo').innerText = `Tipo: ${data.types[0].type.name}`;
       document.getElementById('habilidades').innerText = `Habilidades: ${data.abilities.map(ability => ability.ability.name).join(', ')}`;
-
-      // Obtener la URL de la imagen "official-artwork"
       const imageUrl = data.sprites.other['official-artwork'].front_default;
-
-      // Crear un elemento de imagen en el DOM
       const imagenElemento = document.createElement('img');
-
-      // Establecer la fuente de la imagen
       imagenElemento.src = imageUrl;
-
-      // Agregar la imagen al elemento del DOM
       document.getElementById('imagenPokemon').appendChild(imagenElemento);
   } catch (error) {
       console.error('Hubo un error en la solicitud:', error);
-      // Modificar el DOM en caso de error
-      document.getElementById('nombre').innerText = 'Error al obtener datos';
-      document.getElementById('tipo').innerText = 'Error al obtener datos';
-      document.getElementById('habilidades').innerText = 'Error al obtener datos';
+      document.getElementById('nombre').innerText = 'Error al buscar pokémon';
+      //document.getElementById('tipo').innerText = 'Error al buscar pokémon';
+      //document.getElementById('habilidades').innerText = 'Error al buscar pokémon';
   }
 
   try {
-      // Realizar la solicitud GET utilizando fetch
       const response = await fetch(url1);
       if (!response.ok) {
           throw new Error('Error en la solicitud de la API');
       }
-      // Convertir la respuesta a formato JSON
       const data = await response.json();
-
-      // Obtener la descripción del array de descripciones
       const descripcion = data.flavor_text_entries.find(entry => entry.language.name === 'es').flavor_text;
-
-      // Modificar el DOM con la descripción
       document.getElementById('descripcion').innerText = `Descripción: ${descripcion}`;
 
       //------------------------------------------------------------
-      //obtener el url de del campo evolution_chain    
+
       const evolutionChainUrl = data.evolution_chain.url;
-      console.log('URL de la cadena de evolución (buscar):', evolutionChainUrl);
+      //console.log('URL de la cadena de evolución (buscar):', evolutionChainUrl);
 
       //------------------------------------------------------------
       
       try {
-
-        
         const result = await obtenerSiguientesEvoluciones(nombrePokemon, evolutionChainUrl);
         const botonEvolucion = document.getElementById('miBoton');
 
-        
-        
-
         if (result.length > 0 && result[0] !== 'no') {
 
-         
-
           let indiceEvolucionActual = 1;
-      
-          // Agregar un evento al botón para mostrar la siguiente evolución
+
+          console.log(result[indiceEvolucionActual]);
+          document.getElementById('evolucion').innerText = `Evolucion: ${result[indiceEvolucionActual]}`;
+          var elementoEvolucion = document.getElementById('evolucion');
+
+
           botonEvolucion.addEventListener('click', () => {
-            // Verificar si hay más evoluciones para mostrar
             if (indiceEvolucionActual < result.length) {
-              // Mostrar la siguiente evolución
               mostrarEvolucion(result[indiceEvolucionActual]);
               indiceEvolucionActual++;
+              
+              console.log(result[indiceEvolucionActual]);
+              
+              if(result[indiceEvolucionActual] === undefined){
+                elementoEvolucion.innerText = '';
+                botonEvolucion.style.display = 'none';
+              }
+              else{
+                document.getElementById('evolucion').innerText = `Evolucion: ${result[indiceEvolucionActual]}`;
+              }
+
+
+
             } else {
-              console.log('No hay más evoluciones para mostrar.');
-              //botonEvolucion.style.display = 'none';
+              //console.log('No hay más evoluciones para mostrar.');
+              //elementoEvolucion.innerText = '';
+              
             }
           });
       
           botonEvolucion.style.display = 'flex';
         } else {
-          console.log('No hay evoluciones para mostrar.');
-          //botonEvolucion.style.display = 'none';
+          //console.log('No hay evoluciones para mostrar.');
+          //elementoEvolucion.innerText = '';
         }
 
           
@@ -111,8 +99,7 @@ async function boton() {
       //-------------------------------------------------------
   } catch (error) {
       console.error('Hubo un error en la solicitud:', error);
-      // Modificar el DOM en caso de error
-      document.getElementById('descripcion').innerText = 'Error al obtener datos';
+      //document.getElementById('descripcion').innerText = 'Error al buscar pokémon';
   }
 
 }
@@ -121,7 +108,7 @@ async function boton() {
 
 
 async function mostrarEvolucion(siguienteEvolucion) {
-  console.log('---------siguienteEvolucion-----------------');
+  //console.log('---------siguienteEvolucion-----------------');
   document.getElementById('nombre').innerText = '';
   document.getElementById('tipo').innerText = '';
   document.getElementById('habilidades').innerText = '';
@@ -129,8 +116,8 @@ async function mostrarEvolucion(siguienteEvolucion) {
   document.getElementById('descripcion').innerText = '';
   var url2 = `https://pokeapi.co/api/v2/pokemon/${siguienteEvolucion}`;
   var url3 = `https://pokeapi.co/api/v2/pokemon-species/${siguienteEvolucion}`;
-  console.log(url2);
-  console.log(url3);
+  //console.log(url2);
+  //console.log(url3);
 
   try {
       const response2 = await fetch(url2);
@@ -146,9 +133,9 @@ async function mostrarEvolucion(siguienteEvolucion) {
       reemplazarImagen(imageUrl);
   } catch (error) {
       console.error('Hubo un error en la solicitud:', error);
-      document.getElementById('nombre').innerText = 'Error al obtener datos';
-      document.getElementById('tipo').innerText = 'Error al obtener datos';
-      document.getElementById('habilidades').innerText = 'Error al obtener datos';
+      //document.getElementById('nombre').innerText = 'Error al buscar pokémon';
+      //document.getElementById('tipo').innerText = 'Error al buscar pokémon';
+      //document.getElementById('habilidades').innerText = 'Error al buscar pokémon';
   }
 
   try {
@@ -162,8 +149,7 @@ async function mostrarEvolucion(siguienteEvolucion) {
   
   } catch (error) {
       console.error('Hubo un error en la solicitud:', error);
-      // Modificar el DOM en caso de error
-      document.getElementById('descripcion').innerText = 'Error al obtener datos';
+      //document.getElementById('descripcion').innerText = 'Error al buscar pokémon';
   }
 }
 
@@ -183,7 +169,7 @@ async function mostrarEvolucion(siguienteEvolucion) {
 
 async function obtenerSiguientesEvoluciones(pokemonName, evolutionChainUrl) {
   try {
-    // Realizar la solicitud GET utilizando fetch
+    
     const response = await fetch(evolutionChainUrl);
 
     if (!response.ok) {
@@ -191,16 +177,13 @@ async function obtenerSiguientesEvoluciones(pokemonName, evolutionChainUrl) {
     }
 
     const data = await response.json();
-
-    // Buscar la evolución correspondiente al Pokémon dado
     const evolutionDetails = buscarEvolucion(data.chain, pokemonName);
 
     if (evolutionDetails && evolutionDetails.evolves_to && evolutionDetails.evolves_to.length > 0) {
-      // Obtener todas las evoluciones
       const evoluciones = obtenerTodasEvoluciones(evolutionDetails);
       return evoluciones;
     } else {
-      // Si no hay siguiente evolución, indicarlo
+      
       return ['no'];
     }
   } catch (error) {
@@ -210,7 +193,6 @@ async function obtenerSiguientesEvoluciones(pokemonName, evolutionChainUrl) {
 }
 
 function obtenerTodasEvoluciones(evolucion) {
-  // Función recursiva para obtener todas las evoluciones
   let evoluciones = [evolucion.species.name];
 
   for (const evolucionDeEvolucion of evolucion.evolves_to) {
@@ -222,7 +204,7 @@ function obtenerTodasEvoluciones(evolucion) {
 }
 
 function buscarEvolucion(chain, pokemonName) {
-  // Función recursiva para buscar la evolución correspondiente al Pokémon dado
+  
   if (chain.species.name === pokemonName) {
     return chain;
   }
@@ -251,22 +233,16 @@ function buscarEvolucion(chain, pokemonName) {
 function reemplazarImagen(src) {
   var contenedor = document.getElementById('imagenPokemon');
   
-  // Verificar si hay una imagen en el contenedor
-  if (contenedor.firstChild) {
-      // Obtener la primera imagen (en este caso, asumimos que solo hay una imagen)
-      var imagen = contenedor.firstChild;
 
-      // Reemplazar la fuente (src) de la imagen
+  if (contenedor.firstChild) {
+      var imagen = contenedor.firstChild;
       imagen.src = src;
   } else {
-      // Si no hay una imagen, puedes agregar una nueva
       var contenedor = document.getElementById('imagenPokemon');
-
-      // Crear un elemento de imagen
       var imagen = document.createElement('img');
-      imagen.src = src;  // Ruta de la imagen
+      imagen.src = src;  
 
-      // Agregar la imagen al contenedor
+      
       contenedor.appendChild(imagen);
   }
 }
