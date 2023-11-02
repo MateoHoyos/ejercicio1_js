@@ -41,13 +41,27 @@ main{
       "imagenPokemon1"
       "descripcion1"
       "tipo1"
-      "habilidades1";
+      "habilidades1"
+      "boton2";
     grid-template-columns: 1fr; 
     width: 500px;
     height: 100px;
    align-items:center;
 }
 
+
+.boton2{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  grid-area:boton2;
+
+  background-color: #3498db; 
+  color: #fff; 
+  padding: 10px 20px; 
+  border: none;
+  cursor: pointer;
+}
 
 
 .nombre1{
@@ -99,12 +113,7 @@ main{
   Font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 }
 
-.boton2{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-area:boton2;
-}
+
 
 img {
   width: 100%;
